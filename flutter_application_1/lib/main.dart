@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 void main() {
   runApp(
     MaterialApp( //widget
+    theme: ThemeData(primarySwatch: Colors.purple),
     debugShowCheckedModeBanner: false,
       home: Homepage(), //atributo
     ),
@@ -11,6 +12,7 @@ void main() {
 
 PageController pageController = PageController();
 int paginaAtual = 0;
+int contador = 0;
 
 
 class Homepage extends StatefulWidget {
@@ -30,42 +32,42 @@ class _HomepageState extends State<Homepage> {
         
         // centerTitle: true,
       ),
-      body: PageView(
-        controller: pageController,
-        children: [
-          Container(color: Colors.amber,),
-          Container(color: Colors.orange,),
-          Container(color: Colors.red,),
-        ],
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            UserAccountsDrawerHeader(accountName: Text('Natalia Heinzen'), 
+            accountEmail: Text('nataliaheinzen@gmail.com'),
+            currentAccountPicture: CircleAvatar(
+              child: Text('NH'),
+            ),
+            ),
+            ListTile(
+              title: Text('Minha conta'),
+              subtitle: Text('Dados da sua conta'),
+              trailing: Icon(Icons.money),
+              leading: Icon(Icons.money_off),
+              onLongPress: (){},
+            )
+          ],
+        ),
       ),
-      // Column(
-      //   mainAxisAlignment: MainAxisAlignment.start,
-      //   children: [
-      //   Container(
-      //   // margin:EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      //   // padding: EdgeInsets.all(20),
-      //   width: double.infinity,
-      //   height: 200,
-      //   decoration: BoxDecoration(color: Colors.amber,
-      //   borderRadius: BorderRadius.circular(20),
-      //   gradient: LinearGradient(colors: [Colors.orange, Colors.red])),
-      //   child: Text('Container 1'),
-      // ),
-      // Row(
-      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //   children: [
-      //     Container(
-      //       width: 50,
-      //       height: 50,
-      //       color: Colors.amberAccent,
-      //       ),
-      //       Container(
-      //       width: 50,
-      //       height: 50,
-      //       color: Colors.amberAccent,
-      //       )
-      // ],)
-      // ]),
+      body: Container(
+        padding: EdgeInsets.all(14),
+        child: PageView(
+          controller: pageController,
+          children: [
+            Center(
+              child: Container(
+                padding: EdgeInsets.all(20),
+                child: Text(contador.toString(),style: TextStyle(fontSize: 32),),
+              ),
+            ),
+            Container(color: Colors.orange,),
+            Container(color: Colors.red,),
+          ],
+        ),
+      ),
+      
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: paginaAtual,
         selectedItemColor: Colors.purple,
@@ -73,7 +75,6 @@ class _HomepageState extends State<Homepage> {
           pageController.animateToPage(page, duration: Duration(milliseconds: 200), curve: Curves.linear);
           
         setState(() {
-          
           paginaAtual = page;
         });
 
@@ -86,6 +87,23 @@ class _HomepageState extends State<Homepage> {
           BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
         ],
       ),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+        FloatingActionButton(onPressed: (){
+          setState(() { 
+            if(contador > 0){
+          contador--;
+            }           
+          });
+        }, child: Icon(Icons.remove)),
+        SizedBox(width: 14,),
+        FloatingActionButton(onPressed: (){
+          setState(() {            
+          contador++;
+          });
+        }, child: Icon(Icons.add))
+      ]),
     );
   }
 }
